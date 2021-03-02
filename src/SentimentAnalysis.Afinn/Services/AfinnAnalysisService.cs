@@ -13,9 +13,9 @@ namespace SentimentAnalysis.Afinn.Services
     {
         private const double AfinnMin = -5;
         private const double AfinnMax = 5;
+        private readonly IAppConfiguration appConfiguration;
 
         private readonly ILexiconService lexiconService;
-        private readonly IAppConfiguration appConfiguration;
 
         public AfinnAnalysisService(ILexiconService lexiconService, IAppConfiguration appConfiguration)
         {
@@ -44,15 +44,6 @@ namespace SentimentAnalysis.Afinn.Services
             return scores;
         }
 
-        private double CalculateScore(IEnumerable<int> scores)
-        {
-            var scoreArray = scores.ToArray();
-            var afinnScore = scoreArray.Length == 0 ? 0.0 : scoreArray.Average();
-            var normalizedScore = Map(afinnScore, AfinnMin, AfinnMax, -1, 1);
-
-            return Math.Round(normalizedScore, this.appConfiguration.ResultsValuesDecimalPlaces);
-        }
-
         private static double Map(double x, double inMin, double inMax, double outMin, double outMax) =>
             (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 
@@ -77,6 +68,15 @@ namespace SentimentAnalysis.Afinn.Services
                 .Aggregate(value, (current, character)
                     => current.Replace(character.ToString(), replacementCharacter, StringComparison.InvariantCultureIgnoreCase))
                 .ToLower();
+        }
+
+        private double CalculateScore(IEnumerable<int> scores)
+        {
+            var scoreArray = scores.ToArray();
+            var afinnScore = scoreArray.Length == 0 ? 0.0 : scoreArray.Average();
+            var normalizedScore = Map(afinnScore, AfinnMin, AfinnMax, -1, 1);
+
+            return Math.Round(normalizedScore, this.appConfiguration.ResultsValuesDecimalPlaces);
         }
 
         private double EvaluateExpression(INaturalExpression expression, ILexicon lexicon)

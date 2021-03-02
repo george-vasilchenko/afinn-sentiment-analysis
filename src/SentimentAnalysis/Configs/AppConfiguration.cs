@@ -36,7 +36,7 @@ namespace SentimentAnalysis.Configs
             var numberFormatLocale = configuration[nameof(this.NumberFormatLocale)];
             ValidateString(numberFormatLocale, nameof(this.NumberFormatLocale));
             this.NumberFormatLocale = numberFormatLocale;
-            
+
             var resultsDecimalPlaces = configuration[nameof(this.ResultsValuesDecimalPlaces)];
             ValidateNumber(resultsDecimalPlaces, nameof(this.ResultsValuesDecimalPlaces), out var resultsDecimalPlacesNumeric);
             this.ResultsValuesDecimalPlaces = resultsDecimalPlacesNumeric;

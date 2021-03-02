@@ -28,46 +28,61 @@ namespace SentimentAnalysis.AzureTextAnalytics.Services
             var endpointUri = new Uri(this.azureConfiguration.Endpoint);
             var credential = new AzureKeyCredential(this.azureConfiguration.ApiKey);
             var client = new TextAnalyticsClient(endpointUri, credential);
+            var entries = await this.SendRequestsInBatches(expressions.ToArray(), client);
 
-            var expressionsArray = expressions.ToArray();
-            var documents = expressionsArray.Select(e => e.Text);
-            var response = await client.AnalyzeSentimentBatchAsync(documents);
-            var results = expressionsArray.Zip(response.Value, this.ResultEntrySelector);
-
-            return new AzureTextAnalyticsAnalysisResult(results);
-            /*var results = response.Value
-                .Select(this.ResultEntrySelector);*/
+            return new AzureTextAnalyticsAnalysisResult(entries);
         }
 
-        /*private static string ComposeText(AnalyzeSentimentResult sentimentResult)
+        private static double CalculateAverageValue(double negative, double neutral, double positive)
         {
-            return string.Join(" ", sentimentResult.DocumentSentiment.Sentences.Select(s => s.Text));
-        }*/
+            var halfNeutral = neutral / 2;
+            var _negative = negative + halfNeutral;
+            var _positive = positive + halfNeutral;
+
+            return _positive - _negative;
+        }
+
+        private async Task<IEnumerable<AzureTextAnalyticsResultEntry>> SendRequestsInBatches(
+            IReadOnlyCollection<INaturalExpression> expressionsArray,
+            TextAnalyticsClient client)
+        {
+            var entries = new List<AzureTextAnalyticsResultEntry>();
+            var total = expressionsArray.Count;
+            var taken = 0;
+            const int chunkSize = 10;
+
+            while (taken < total)
+            {
+                var expressionsSegmentArray = expressionsArray.Skip(taken).Take(chunkSize).ToArray();
+                var response = await client.AnalyzeSentimentBatchAsync(expressionsSegmentArray.Select(e => e.Text));
+                var results = expressionsSegmentArray.Zip(response.Value, this.ResultEntrySelector).ToArray();
+
+                taken += expressionsSegmentArray.Length;
+                entries.AddRange(results);
+            }
+
+            return entries;
+        }
 
         private AzureTextAnalyticsResultEntry ResultEntrySelector(INaturalExpression expression, AnalyzeSentimentResult sentimentResult)
         {
-            var (negative, neutral, positive) = this.ComposeScore(sentimentResult);
+            var (average, negative, neutral, positive) = this.ComposeScore(sentimentResult);
             return new AzureTextAnalyticsResultEntry(
                 expression.Text,
+                average,
                 negative,
                 neutral,
                 positive,
                 this.appConfiguration.NumberFormatLocale);
         }
-        
-        /*private AzureTextAnalyticsResultEntry ResultEntrySelector(AnalyzeSentimentResult sentimentResult)
-        {
-            var (negative, neutral, positive) = this.ComposeScore(sentimentResult);
-            return new AzureTextAnalyticsResultEntry(
-                ComposeText(sentimentResult),
-                negative,
-                neutral,
-                positive,
-                this.appConfiguration.NumberFormatLocale);
-        }*/
 
-        private (double negative, double neutral, double positive) ComposeScore(AnalyzeSentimentResult sentimentResult)
+        private (double average, double negative, double neutral, double positive) ComposeScore(AnalyzeSentimentResult sentimentResult)
         {
+            var averageScore = Math.Round(CalculateAverageValue(
+                    sentimentResult.DocumentSentiment.ConfidenceScores.Negative,
+                    sentimentResult.DocumentSentiment.ConfidenceScores.Neutral,
+                    sentimentResult.DocumentSentiment.ConfidenceScores.Positive),
+                this.appConfiguration.ResultsValuesDecimalPlaces);
             var negativeScore = Math.Round(sentimentResult.DocumentSentiment.ConfidenceScores.Negative,
                 this.appConfiguration.ResultsValuesDecimalPlaces);
             var neutralScore = Math.Round(sentimentResult.DocumentSentiment.ConfidenceScores.Neutral,
@@ -75,7 +90,7 @@ namespace SentimentAnalysis.AzureTextAnalytics.Services
             var positiveScore = Math.Round(sentimentResult.DocumentSentiment.ConfidenceScores.Positive,
                 this.appConfiguration.ResultsValuesDecimalPlaces);
 
-            return (negativeScore, neutralScore, positiveScore);
+            return (averageScore, negativeScore, neutralScore, positiveScore);
         }
     }
 }
