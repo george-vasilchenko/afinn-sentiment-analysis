@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.AI.TextAnalytics" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
@@ -16,9 +17,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.local.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SentimentAnalysis.Afinn\SentimentAnalysis.Afinn.csproj" />
+      <ProjectReference Include="..\SentimentAnalysis.AzureTextAnalytics\SentimentAnalysis.AzureTextAnalytics.csproj" />
+      <ProjectReference Include="..\SentimentAnalysis.Common\SentimentAnalysis.Common.csproj" />
     </ItemGroup>
 
 </Project>

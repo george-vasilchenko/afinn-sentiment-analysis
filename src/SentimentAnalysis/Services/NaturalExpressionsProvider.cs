@@ -4,26 +4,25 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Afinn.Configs;
-using Afinn.Models;
 using ExcelDataReader;
+using SentimentAnalysis.Common.Configs;
+using SentimentAnalysis.Common.Models;
+using SentimentAnalysis.Models;
 
-namespace Afinn.Services
+namespace SentimentAnalysis.Services
 {
-    public class CommentsService : ICommentsService
+    public class NaturalExpressionsProvider : INaturalExpressionsProvider
     {
-        private readonly IEnumerable<Comment> comments;
-
-        public CommentsService(IAppConfiguration appConfiguration)
-            => this.comments = InitializeComments(
+        public NaturalExpressionsProvider(IAppConfiguration appConfiguration)
+            => this.Expressions = InitializeExpressions(
                 appConfiguration.DatasetPath,
                 appConfiguration.DatasetTargetSheetIndex,
                 appConfiguration.DatasetTargetColumnIndex,
                 appConfiguration.DatasetRowsToSkip);
 
-        public IEnumerable<Comment> GetComments() => this.comments;
+        public IEnumerable<INaturalExpression> Expressions { get; }
 
-        private static IEnumerable<Comment> InitializeComments(string path, int sheetIndex, int columnIndex, int rowsToSkip)
+        private static IEnumerable<NaturalExpression> InitializeExpressions(string path, int sheetIndex, int columnIndex, int rowsToSkip)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -39,9 +38,9 @@ namespace Afinn.Services
                 .ToArray();
         }
 
-        private static Func<DataRow, Comment> CommentSelector(int columnIndex)
+        private static Func<DataRow, NaturalExpression> CommentSelector(int columnIndex)
         {
-            return dr => new Comment(dr.ItemArray[columnIndex].ToString());
+            return row => new NaturalExpression(row.ItemArray[columnIndex].ToString());
         }
     }
 }

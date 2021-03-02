@@ -1,9 +1,7 @@
-namespace Afinn.Configs
+namespace SentimentAnalysis.Common.Configs
 {
     public interface IAppConfiguration
     {
-        string LexiconPath { get; }
-
         string DatasetPath { get; }
 
         int DatasetTargetSheetIndex { get; }
@@ -13,5 +11,9 @@ namespace Afinn.Configs
         int DatasetRowsToSkip { get; }
 
         string ResultsFilePath { get; }
+
+        string NumberFormatLocale { get; }
+
+        int ResultsValuesDecimalPlaces { get; }
     }
 }

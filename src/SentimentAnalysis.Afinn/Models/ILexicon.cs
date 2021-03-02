@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Afinn.Models
+namespace SentimentAnalysis.Afinn.Models
 {
     public interface ILexicon
     {

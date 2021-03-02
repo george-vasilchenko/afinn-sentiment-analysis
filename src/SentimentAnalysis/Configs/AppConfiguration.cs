@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Extensions.Configuration;
+using SentimentAnalysis.Common.Configs;
 
-namespace Afinn.Configs
+namespace SentimentAnalysis.Configs
 {
     public class AppConfiguration : IAppConfiguration
     {
@@ -12,12 +13,8 @@ namespace Afinn.Configs
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            var lexiconPath = configuration[nameof(this.LexiconPath)];
-            ValidatePath(lexiconPath, nameof(this.LexiconPath));
-            this.LexiconPath = lexiconPath;
-
             var datasetPath = configuration[nameof(this.DatasetPath)];
-            ValidatePath(datasetPath, nameof(this.DatasetPath));
+            ValidateString(datasetPath, nameof(this.DatasetPath));
             this.DatasetPath = datasetPath;
 
             var datasetTargetSheetIndex = configuration[nameof(this.DatasetTargetSheetIndex)];
@@ -31,17 +28,27 @@ namespace Afinn.Configs
             var datasetRowsToSkip = configuration[nameof(this.DatasetRowsToSkip)];
             ValidateNumber(datasetRowsToSkip, nameof(this.DatasetRowsToSkip), out var datasetRowsToSkipNumeric);
             this.DatasetRowsToSkip = datasetRowsToSkipNumeric;
-            
+
             var resultsFilePath = configuration[nameof(this.ResultsFilePath)];
-            ValidatePath(resultsFilePath, nameof(this.ResultsFilePath));
+            ValidateString(resultsFilePath, nameof(this.ResultsFilePath));
             this.ResultsFilePath = resultsFilePath;
+
+            var numberFormatLocale = configuration[nameof(this.NumberFormatLocale)];
+            ValidateString(numberFormatLocale, nameof(this.NumberFormatLocale));
+            this.NumberFormatLocale = numberFormatLocale;
+            
+            var resultsDecimalPlaces = configuration[nameof(this.ResultsValuesDecimalPlaces)];
+            ValidateNumber(resultsDecimalPlaces, nameof(this.ResultsValuesDecimalPlaces), out var resultsDecimalPlacesNumeric);
+            this.ResultsValuesDecimalPlaces = resultsDecimalPlacesNumeric;
         }
 
         public int DatasetRowsToSkip { get; }
 
         public string ResultsFilePath { get; }
 
-        public string LexiconPath { get; }
+        public string NumberFormatLocale { get; }
+
+        public int ResultsValuesDecimalPlaces { get; }
 
         public string DatasetPath { get; }
 
@@ -57,9 +64,9 @@ namespace Afinn.Configs
             }
         }
 
-        private static void ValidatePath(string path, string argumentName)
+        private static void ValidateString(string value, string argumentName)
         {
-            if (string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Value cannot be null or whitespace.", argumentName);
             }

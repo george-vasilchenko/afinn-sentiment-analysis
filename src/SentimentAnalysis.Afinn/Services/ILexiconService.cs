@@ -1,6 +1,6 @@
-using Afinn.Models;
+using SentimentAnalysis.Afinn.Models;
 
-namespace Afinn.Services
+namespace SentimentAnalysis.Afinn.Services
 {
     public interface ILexiconService
     {

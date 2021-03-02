@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.IO;
-using Afinn.Configs;
-using Afinn.Models;
+using SentimentAnalysis.Afinn.Configs;
+using SentimentAnalysis.Afinn.Models;
 
-namespace Afinn.Services
+namespace SentimentAnalysis.Afinn.Services
 {
     public class LexiconService : ILexiconService
     {
         private readonly ILexicon lexicon;
 
-        public LexiconService(IAppConfiguration appConfiguration) => this.lexicon = new Lexicon(InitializeLexicon(appConfiguration.LexiconPath));
+        public LexiconService(IAfinnConfiguration afinnConfiguration)
+            => this.lexicon = new Lexicon(InitializeLexicon(afinnConfiguration.LexiconPath));
 
         public ILexicon GetLexicon() => this.lexicon;
 
@@ -39,7 +40,7 @@ namespace Afinn.Services
         {
             const char separator = '\t';
             var elements = line.Split(new[] { separator });
-            
+
             return KeyValuePair.Create(elements[0], int.Parse(elements[1]));
         }
     }

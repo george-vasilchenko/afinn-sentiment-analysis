@@ -1,5 +1,6 @@
 # Common IntelliJ Platform excludes
 .idea/
+appsettings.local.json
 
 *.suo
 *.user

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentimentAnalysis", "SentimentAnalysis\SentimentAnalysis.csproj", "{7EDFD395-0282-4BB3-AA22-B9036080F576}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentimentAnalysis.Afinn", "SentimentAnalysis.Afinn\SentimentAnalysis.Afinn.csproj", "{C5BFD49B-9288-4B52-8641-95C11EEC559F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentimentAnalysis.AzureTextAnalytics", "SentimentAnalysis.AzureTextAnalytics\SentimentAnalysis.AzureTextAnalytics.csproj", "{4E044796-2532-4AA0-9E10-4158A5E4E7A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentimentAnalysis.Common", "SentimentAnalysis.Common\SentimentAnalysis.Common.csproj", "{DFEBB5C2-9D76-4EC0-9037-0A4DB4CBAC4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EDFD395-0282-4BB3-AA22-B9036080F576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EDFD395-0282-4BB3-AA22-B9036080F576}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EDFD395-0282-4BB3-AA22-B9036080F576}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EDFD395-0282-4BB3-AA22-B9036080F576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5BFD49B-9288-4B52-8641-95C11EEC559F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5BFD49B-9288-4B52-8641-95C11EEC559F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5BFD49B-9288-4B52-8641-95C11EEC559F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5BFD49B-9288-4B52-8641-95C11EEC559F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E044796-2532-4AA0-9E10-4158A5E4E7A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E044796-2532-4AA0-9E10-4158A5E4E7A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E044796-2532-4AA0-9E10-4158A5E4E7A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E044796-2532-4AA0-9E10-4158A5E4E7A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFEBB5C2-9D76-4EC0-9037-0A4DB4CBAC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFEBB5C2-9D76-4EC0-9037-0A4DB4CBAC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFEBB5C2-9D76-4EC0-9037-0A4DB4CBAC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFEBB5C2-9D76-4EC0-9037-0A4DB4CBAC4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
