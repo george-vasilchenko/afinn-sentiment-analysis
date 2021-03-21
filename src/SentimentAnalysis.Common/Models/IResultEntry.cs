@@ -4,10 +4,6 @@ namespace SentimentAnalysis.Common.Models
     {
         string Text { get; }
 
-        object Score { get; }
-
-        string ToCombinedString();
-
         string ToScoreString();
     }
 }

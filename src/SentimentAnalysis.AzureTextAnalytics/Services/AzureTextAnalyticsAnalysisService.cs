@@ -9,6 +9,7 @@ using SentimentAnalysis.AzureTextAnalytics.Models;
 using SentimentAnalysis.Common.Configs;
 using SentimentAnalysis.Common.Models;
 using SentimentAnalysis.Common.Services;
+using Serilog;
 
 namespace SentimentAnalysis.AzureTextAnalytics.Services
 {
@@ -59,6 +60,7 @@ namespace SentimentAnalysis.AzureTextAnalytics.Services
 
                 taken += expressionsSegmentArray.Length;
                 entries.AddRange(results);
+                Log.Logger.Information($"Processed documents: {taken}");
             }
 
             return entries;

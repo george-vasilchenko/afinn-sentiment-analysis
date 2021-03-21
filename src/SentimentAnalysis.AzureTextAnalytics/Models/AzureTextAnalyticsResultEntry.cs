@@ -23,10 +23,6 @@ namespace SentimentAnalysis.AzureTextAnalytics.Models
 
         public string Text { get; }
 
-        object IResultEntry.Score => (this.negative, this.neutral, this.positive);
-
-        public string ToCombinedString() => $"{this.ToScoreString()}\t{this.Text}";
-
         public string ToScoreString()
         {
             var averageSegment = this.average.ToString(new CultureInfo(this.locale).NumberFormat);

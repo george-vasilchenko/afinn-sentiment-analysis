@@ -17,10 +17,6 @@ namespace SentimentAnalysis.Afinn.Models
 
         public string Text { get; }
 
-        object IResultEntry.Score => this.score;
-
-        public string ToCombinedString() => $"{this.ToScoreString()}\t{this.Text}";
-
         public string ToScoreString() => this.score.ToString(new CultureInfo(this.locale).NumberFormat);
     }
 }

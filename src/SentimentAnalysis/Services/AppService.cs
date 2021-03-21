@@ -28,7 +28,7 @@ namespace SentimentAnalysis.Services
 
         public async Task RunAsync()
         {
-            var expressions = this.naturalExpressionsProvider.Expressions.Take(100).ToArray();
+            var expressions = this.naturalExpressionsProvider.Expressions.ToArray();
             var combinedResults = await this.RunAnalysisAsync(expressions);
             var analysisResultsText = ConvertAnalysisResultsToText(combinedResults);
 
